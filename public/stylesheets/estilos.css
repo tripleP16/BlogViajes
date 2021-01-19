@@ -10,3 +10,7 @@ body {
   main {
     flex: 1 0 auto;
   }
+
+.titulo{
+  color: #00474A;
+}

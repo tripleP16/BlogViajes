@@ -21,7 +21,33 @@
 </head>
 <body>
     <%- include ("./partials/encabezadoPublico") %>
-    <main></main>
+    <br>
+    <br>
+    <main>
+      <h3 class="titulo center">Nuestros Posts Mas recientes </h3>
+      <div class="row">
+        <% publicaciones.forEach(publicacion => { %>
+            <div class="col s12 m6">
+              <div class="card cyan darken-2">
+                <div class="card-content white-text">
+                  <span class="card-title"><%=publicacion.titulo%></span>
+                  <p><%= publicacion.resumen %></p>
+                </div>
+                <div class="card-action">
+                  <a href="#">
+                    <i class="small material-icons left">favorite</i> 
+                    <%=publicacion.votos%>
+                  </a>
+                  <p class="white-text">
+                    <i class="small material-icons left"> date_range</i>
+                    <%= publicacion.fecha_hora.getFullYear() %>/<%= publicacion.fecha_hora.getMonth()+1 %>/<%= publicacion.fecha_hora.getDate() %></p>
+                  <a href="#"><i class="small material-icons left">account_circle</i><%=publicacion.pseudonimo%></a>
+                </div>
+              </div>
+            </div> 
+        <% }) %>
+      </div>
+    </main>
     <%- include ("./partials/footer") %>
 
   <script src="javascripts/script.js"></script>

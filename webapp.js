@@ -22,7 +22,19 @@ aplicacion.use(express.static('public'))
 
 aplicacion.get('/', function (peticion, respuesta) {
   pool.getConnection(function(err, connection) {
-    respuesta.render('index')
+    const consulta = `
+    SELECT
+    titulo, resumen, fecha_hora, pseudonimo, votos
+    FROM publicaciones
+    INNER JOIN autores
+    ON publicaciones.autor_id = autores.id
+    ORDER BY fecha_hora DESC
+    LIMIT 5
+  `
+  connection.query(consulta, function (error, filas, campos) {
+    respuesta.render('index', { publicaciones: filas })
+  })
+  connection.release()
   })
 })
 

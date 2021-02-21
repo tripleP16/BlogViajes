@@ -12,10 +12,34 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" href="assets/logo.png" />
     <link rel="stylesheet" href="stylesheets/estilos.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap" rel="stylesheet">
     <title>Me voy de viaje</title>
 </head>
 <body>
    <%- include("./partials/encabezadoPublico.ejs")%>
+   <br>
+    <h3 class="center teal-text text-darken-4 titulo">Publicaciones Recientes</h3>
+    <div class="row">
+        <% data.forEach(dato => { %>
+        <div class="col s12 m6 l6">
+            <div class="card   brown darken-2">
+              <div class="card-content white-text">
+                <span class="card-title titulo"><strong><%= dato.titulo %></strong></span>
+                <p><%= dato.resumen %></p>
+                <p><i class="tiny left material-icons">person</i> <%= dato.pseudonimo %>
+                    <br>
+                    <i class="tiny left material-icons">date_range</i><%= dato.fecha_hora.getFullYear() %>/<%= dato.fecha_hora.getMonth()+1 %>/<%= dato.fecha_hora.getDate() %>
+                </p>
+              </div>
+              <div class="card-action">
+                <a><i class="small left material-icons">favorite</i><%= dato.votos %></a>               
+              </div>
+            </div>
+          </div>
+          <% }) %>
+    </div>
     
+    <%- include("./partials/footer.ejs")%>
 </body>
 </html>

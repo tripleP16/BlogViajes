@@ -15,5 +15,17 @@ body{
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-attachment: fixed;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
+.contenedor {
+    flex: 1 0 auto;
+  }
+
+  .mensaje{
+    font-family: 'Akaya Telivigala', cursive;
+    background-color: white;
+    color: #004d40 ;
+  }
       

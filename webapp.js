@@ -34,6 +34,43 @@ aplicacion.get('/', function (peticion, respuesta) {
   })
 })
 
+aplicacion.get('/registro', function(peticion, respuesta){
+  respuesta.render('registro', {mensaje: peticion.flash('mensaje')})
+})
+
+aplicacion.post('/procesarR', function(peticion, respuesta){
+  pool.getConnection(function(err, connection) {
+    const email = peticion.body.email.toLowerCase().trim()
+    const pseudonimo = peticion.body.pseudonimo.trim()
+    const contrasena = peticion.body.contrasena
+    const validacionEmail = `SELECT * FROM autores WHERE email = '${email}'`
+    
+    connection.query(validacionEmail, function(error, filas, campos){
+    
+      if(filas.length >0){
+        peticion.flash('mensaje', 'Email existente')
+        respuesta.redirect('/registro')
+      }else{
+        const validacionPseudonimo = `SELECT * FROM autores WHERE pseudonimo = '${pseudonimo}'`
+        connection.query(validacionPseudonimo, function(error, filas, campos){
+          if(filas.length >0){
+            peticion.flash('mensaje', 'Pseudonimo existente')
+            respuesta.redirect('/registro')
+          }else{
+            const insertar = `INSERT INTO autores (email, contrasena, pseudonimo) VALUES('${email}', '${contrasena}', '${pseudonimo}')`; 
+            connection.query(insertar, function(error, filas, campos){
+              peticion.flash('mensaje', 'Usuario Registrado Exitosamente')
+              respuesta.redirect('/registro')
+            })
+          }
+        })
+      }
+    })
+    
+    connection.release()
+  })
+})
+
 aplicacion.listen(8080, function(){
   console.log("Servidor iniciado")
 })

@@ -1,55 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Viajes de Maravilla</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="stylesheets/estilos.css">
-  <!-- Compressed CSS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="shortcut icon" href="/assets/logo.png" />
-
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>     
+    <script src="javascripts/script.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="assets/logo.png" />
+    <link rel="stylesheet" href="stylesheets/estilos.css">
+    <title>Me voy de viaje</title>
 </head>
 <body>
-    <%- include ("./partials/encabezadoPublico") %>
-    <br>
-    <br>
-    <main>
-      <h3 class="titulo center">Nuestros Posts Mas recientes </h3>
-      <div class="row">
-        <% publicaciones.forEach(publicacion => { %>
-            <div class="col s12 m6">
-              <div class="card cyan darken-2">
-                <div class="card-content white-text">
-                  <span class="card-title"><%=publicacion.titulo%></span>
-                  <p><%= publicacion.resumen %></p>
-                </div>
-                <div class="card-action">
-                  <a href="#">
-                    <i class="small material-icons left">favorite</i> 
-                    <%=publicacion.votos%>
-                  </a>
-                  <p class="white-text">
-                    <i class="small material-icons left"> date_range</i>
-                    <%= publicacion.fecha_hora.getFullYear() %>/<%= publicacion.fecha_hora.getMonth()+1 %>/<%= publicacion.fecha_hora.getDate() %></p>
-                  <a href="#"><i class="small material-icons left">account_circle</i><%=publicacion.pseudonimo%></a>
-                </div>
-              </div>
-            </div> 
-        <% }) %>
-      </div>
-    </main>
-    <%- include ("./partials/footer") %>
-
-  <script src="javascripts/script.js"></script>
+   <%- include("./partials/encabezadoPublico.ejs")%>
+    
 </body>
 </html>

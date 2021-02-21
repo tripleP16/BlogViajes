@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('express-flash')
 
+
 var pool = mysql.createPool({
   connectionLimit: 20,
   host: 'localhost',
@@ -22,19 +23,7 @@ aplicacion.use(express.static('public'))
 
 aplicacion.get('/', function (peticion, respuesta) {
   pool.getConnection(function(err, connection) {
-    const consulta = `
-    SELECT
-    titulo, resumen, fecha_hora, pseudonimo, votos
-    FROM publicaciones
-    INNER JOIN autores
-    ON publicaciones.autor_id = autores.id
-    ORDER BY fecha_hora DESC
-    LIMIT 5
-  `
-  connection.query(consulta, function (error, filas, campos) {
-    respuesta.render('index', { publicaciones: filas })
-  })
-  connection.release()
+    respuesta.render('index')
   })
 })
 

@@ -19,10 +19,32 @@
 <body>
    <%- include("../partials/encabezadoPrivado.ejs")%>
    <br>
-    <div class="row contenedor">
+   <div class="row contenedor">
+    <h3 class="center white-text text-darken-2 titulo">Mis Publicaciones</h3>
+        <% if(mensaje && mensaje.length > 0){ %>
+            <h5 class="mensaje center"><%=mensaje%></h5>
+        <% } %>
+        <table class=" white col s12 ">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Resumen</th>
+                    <th>Votos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% publicaciones.forEach(dato => { %>
+                    <tr>
+                        <td><%= dato.titulo %></td>
+                        <td><%= dato.resumen %></td>
+                        <td><%= dato.votos %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <a class="waves-effect brown darken-2 btn-large" href="/admin/agregar"><i class="material-icons left">add</i>Agregar Publicacion</a>
         
-    </div>
-    
+    </div>    
     <%- include("../partials/footer.ejs")%>
 </body>
 </html>

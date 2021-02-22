@@ -20,7 +20,14 @@ aplicacion.set("view engine", "ejs")
 aplicacion.use(session({ secret: 'token-muy-secreto', resave: true, saveUninitialized: true }));
 aplicacion.use(flash())
 aplicacion.use(express.static('public'))
-
+aplicacion.use('/admin/', (peticion, respuesta, siguiente)=>{
+  if(peticion.session.usuario){
+    siguiente()
+  }else{
+    peticion.flash('mensaje', 'Debe iniciar Sesion')
+    respuesta.redirect('/inicioSesion')
+  }
+})
 aplicacion.get('/', function (peticion, respuesta) {
 
   pool.getConnection(function(err, connection) {
@@ -36,6 +43,27 @@ aplicacion.get('/', function (peticion, respuesta) {
 
 aplicacion.get('/registro', function(peticion, respuesta){
   respuesta.render('registro', {mensaje: peticion.flash('mensaje')})
+})
+
+aplicacion.get('/inicioSesion', function(peticion, respuesta){
+  respuesta.render('inicioSesion', {mensaje: peticion.flash('mensaje')})
+})
+
+aplicacion.post('/inicioS', function(peticion, respuesta){
+  pool.getConnection(function(err,connection){
+    const email = peticion.body.email.toLowerCase().trim()
+    const contrasena = peticion.body.contrasena
+    const validacion = `SELECT * FROM autores WHERE email = '${email}' AND contrasena = '${contrasena}'`
+    connection.query(validacion, function(error, filas, campos){
+      if(filas[0]){
+        peticion.session.usuario = filas[0]
+        respuesta.redirect('/admin/index')
+      }else{
+        peticion.flash('mensaje', 'Credenciales incorrectas')
+        respuesta.redirect('/inicioSesion')
+      }
+    })
+  })
 })
 
 aplicacion.post('/procesarR', function(peticion, respuesta){
@@ -69,6 +97,15 @@ aplicacion.post('/procesarR', function(peticion, respuesta){
     
     connection.release()
   })
+})
+
+aplicacion.get('/admin/index', function (peticion, respuesta) {
+  respuesta.render('admin/index', { usuario: peticion.session.usuario, mensaje: peticion.flash('mensaje') })
+})
+
+aplicacion.get('/cerrar', function(peticion, respuesta){
+  peticion.session.destroy();
+  respuesta.redirect("/")
 })
 
 aplicacion.listen(8080, function(){

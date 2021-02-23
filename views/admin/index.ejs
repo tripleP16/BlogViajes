@@ -30,6 +30,7 @@
                     <th>Titulo</th>
                     <th>Resumen</th>
                     <th>Votos</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,11 @@
                         <td><%= dato.titulo %></td>
                         <td><%= dato.resumen %></td>
                         <td><%= dato.votos %></td>
+                        <td><a class="waves-effect yellow accent-4 btn" href="/admin/editar/<%= dato.id%>"><i class="material-icons">edit</i></a> 
+                            <br>
+                            <br>
+                            <a class="waves-effect red darken-4 btn"><i class="material-icons">delete</i></a>
+                        </td>
                     </tr>
                 <% }) %>
             </tbody>

@@ -99,4 +99,20 @@ aplicacion.get('/admin/index', function (peticion, respuesta) {
     })
   })
 
+  aplicacion.get('/admin/procesarD/:id', function(peticion, respuesta){
+    pool.getConnection((err, connection)=>{
+      const eliminar = `DELETE FROM publicaciones WHERE id = ${connection.escape(peticion.params.id)}  AND
+      autor_id = ${connection.escape(peticion.session.usuario.id)}`
+      connection.query(eliminar, (error, filas, campos) => {
+        if (filas && filas.affectedRows  > 0){
+          peticion.flash('mensaje', 'Publicación eliminada')
+        }
+        else{
+          peticion.flash('mensaje', 'Publicación no eliminada')
+        }
+        respuesta.redirect("/admin/index")
+      })
+      connection.release()
+    })
+  })
   module.exports = aplicacion

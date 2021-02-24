@@ -41,7 +41,12 @@
               <div class="card-content white-text">
                 <span class="card-title titulo"><strong><%= dato.titulo %></strong></span>
                 <p><%= dato.resumen %></p>
-                <p><i class="tiny left material-icons">person</i> <%= dato.pseudonimo %>
+                <p><% if(dato.avatar && dato.avatar !="") { %>
+                      <img src="avatars/<%=dato.avatar %>" alt="" class="avatar">
+                    <% }else{ %>
+                    <i class="tiny left material-icons">person</i> 
+                    <%}%>
+                    <%= dato.pseudonimo %>
                     <br>
                     <i class="tiny left material-icons">date_range</i><%= dato.fecha_hora.getFullYear() %>/<%= dato.fecha_hora.getMonth()+1 %>/<%= dato.fecha_hora.getDate() %>
                 </p>

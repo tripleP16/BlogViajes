@@ -28,7 +28,7 @@ var pool = mysql.createPool({
         `
         consulta = `
         SELECT
-        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id
+        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id, avatar
         FROM publicaciones
         INNER JOIN autores
         ON publicaciones.autor_id = autores.id
@@ -43,7 +43,7 @@ var pool = mysql.createPool({
         }
         modificadorPagina = `LIMIT 5 OFFSET ${pagina * 5}`
         consulta = `SELECT
-        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id
+        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id, avatar
         FROM publicaciones
         INNER JOIN autores
         ON publicaciones.autor_id = autores.id

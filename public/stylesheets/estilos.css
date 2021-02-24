@@ -28,4 +28,8 @@ body{
     background-color: white;
     color: #004d40 ;
   }
+
+  .avatar{
+   max-height: 15px;
+  }
       

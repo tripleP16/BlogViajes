@@ -3,6 +3,15 @@ const aplicacion = express.Router()
 const mysql = require('mysql')
 var path = require('path')
 const fileupload = require('express-fileupload')
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service:'gmail',
+  auth:{
+    user: 'prueba@gmail.com',
+    pass:'prueba123'
+  }
+})
 aplicacion.use(fileupload())
 var pool = mysql.createPool({
     connectionLimit: 20,
@@ -11,6 +20,18 @@ var pool = mysql.createPool({
     password: '27784169Pp',
     database: 'blog_viajes'
   })
+
+  function enviarCorreoBienvenida(email, nombre){
+    const opciones = {
+      from: 'prueba@gmail.com',
+      to : email, 
+      subject: 'Bienvenido', 
+      text: `Hola ${nombre}`
+
+    }
+
+    transporter.sendMail(opciones, (error, info)=>{})
+  }
 
   aplicacion.get('/', (peticion, respuesta) => {
     pool.getConnection((err, connection) => {
@@ -116,10 +137,12 @@ var pool = mysql.createPool({
                     connection.query(consultaAvatar, function(error, filas, campos){
                       peticion.flash('mensaje', 'Usuario Registrado Exitosamente con Avatar')
                       respuesta.redirect('/registro')
+                      enviarCorreoBienvenida(email, pseudonimo)
                     })
                   })
                 }else{
                   peticion.flash('mensaje', 'Usuario Registrado Exitosamente')
+                  enviarCorreoBienvenida(email, pseudonimo)
                   respuesta.redirect('/registro')
                 }
                 

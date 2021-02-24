@@ -147,6 +147,23 @@ var pool = mysql.createPool({
     })
   })
 
+  aplicacion.get('/publicacion/:id/votar', function(peticion, respuesta){
+    pool.getConnection(function(err,connection){
+      const consulta = `SELECT * FROM publicaciones WHERE id = ${connection.escape(peticion.params.id)}`
+      connection.query(consulta, function(error, filas, campos){
+        if(filas.length > 0){
+          const votos = `UPDATE publicaciones SET votos = votos +1 WHERE id = ${connection.escape(peticion.params.id)}`
+          connection.query(votos, (error, filas, campos)=>{
+            respuesta.redirect(`/publicacion/${peticion.params.id}`)
+          })
+        }else{
+          respuesta.redirect('/')
+        }
+      })
+      connection.release()
+    })
+  })
+
   aplicacion.get('/autores', function(peticion, respuesta){
     pool.getConnection((err, connection) => {
       const consulta = `

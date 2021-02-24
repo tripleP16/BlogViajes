@@ -49,11 +49,12 @@
                     <%= dato.pseudonimo %>
                     <br>
                     <i class="tiny left material-icons">date_range</i><%= dato.fecha_hora.getFullYear() %>/<%= dato.fecha_hora.getMonth()+1 %>/<%= dato.fecha_hora.getDate() %>
+                    <br>
+                    <a><i class="tiny left material-icons">favorite</i><%= dato.votos %></a>      
                 </p>
               </div>
               <div class="card-action">
-                <a><i class="small left material-icons">favorite</i><%= dato.votos %></a>  
-                <a href="/publicacion/<%=dato.id%>"><i class="small left material-icons">details</i></a>             
+                <a href="/publicacion/<%=dato.id%>"><i class="small left material-icons">details</i>Detalles</a>
               </div>
             </div>
           </div>

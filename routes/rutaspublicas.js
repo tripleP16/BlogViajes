@@ -14,6 +14,8 @@ var pool = mysql.createPool({
     pool.getConnection((err, connection) => {
       let consulta
       let modificadorConsulta = ""
+      let pagina = 0 
+      let modificadorPagina = ""
       const busqueda = ( peticion.query.busqueda ) ? peticion.query.busqueda : ""
       if (busqueda != ""){
         modificadorConsulta = `
@@ -31,17 +33,25 @@ var pool = mysql.createPool({
         ${modificadorConsulta}
         ORDER BY fecha_hora DESC
       `
+      modificadorPagina =""
       }else{
+        pagina = (peticion.query.pagina) ? parseInt(peticion.query.pagina) : 0
+        if(pagina < 0){
+          pagina = 0
+        }
+        modificadorPagina = `LIMIT 5 OFFSET ${pagina * 5}`
         consulta = `SELECT
         titulo, resumen, fecha_hora, pseudonimo, votos
         FROM publicaciones
         INNER JOIN autores
         ON publicaciones.autor_id = autores.id
-        ORDER BY fecha_hora DESC`
+        ORDER BY fecha_hora DESC 
+          ${modificadorPagina}
+        `
       }
       
       connection.query(consulta, (error, filas, campos) => {
-        respuesta.render('index', { data: filas , busqueda: busqueda})
+        respuesta.render('index', { data: filas , busqueda: busqueda, pagina:pagina})
       })
       connection.release()
     })

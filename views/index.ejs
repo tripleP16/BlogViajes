@@ -52,7 +52,13 @@
             </div>
           </div>
           <% }) %>
+          
+                    
     </div>
+    <ul class="pagination white center">
+      <li class="waves-effect"><a href="/?pagina=<%=pagina-1%>"><i class="material-icons">chevron_left</i></a></li>
+      <li class="waves-effect"><a href="/?pagina=<%=pagina+1%>"><i class="material-icons">chevron_right</i></a></li>
+    </ul>
     
     <%- include("./partials/footer.ejs")%>
 </body>

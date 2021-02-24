@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>     
+    <script src="/javascripts/script.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="/assets/logo.png" />
+    <link rel="stylesheet" href="/stylesheets/estilos.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap" rel="stylesheet">
+    <title>Me voy de viaje</title>
+</head>
+<body>
+   <%- include("./partials/encabezadoPublico.ejs")%>
+   <br>
+    <h3 class="center white-text text-darken-2 titulo"><%=data.titulo%></h3>
+
+        <div class="col s12">
+            <div class="card brown darken-2">
+              <div class="card-content white-text">
+                <p><%= data.contenido %></p>
+                <p><i class="tiny left material-icons">person</i> <%= data.pseudonimo %>
+                    <br>
+                    <i class="tiny left material-icons">date_range</i><%= data.fecha_hora.getFullYear() %>/<%= data.fecha_hora.getMonth()+1 %>/<%= data.fecha_hora.getDate() %>
+                </p>
+              </div>
+              <div class="card-action">
+                <a><i class="small left material-icons">favorite</i><%= data.votos %></a>              
+              </div>
+            </div>
+          </div>
+          <div class="contenedor"></div>
+    
+    <%- include("./partials/footer.ejs")%>
+</body>
+</html>

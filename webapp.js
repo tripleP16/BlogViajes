@@ -7,6 +7,7 @@ const flash = require('express-flash')
 const middleware = require('./routes/rutasmiddleware')
 const admin = require('./routes/rutasadmin')
 const publicas = require('./routes/rutaspublicas')
+const fileupload = require('express-fileupload')
 var pool = mysql.createPool({
   connectionLimit: 20,
   host: 'localhost',
@@ -24,7 +25,7 @@ aplicacion.use(express.static('public'))
 aplicacion.use(middleware)
 aplicacion.use(admin)
 aplicacion.use(publicas)
-
+aplicacion.use(fileupload())
 
 
 aplicacion.listen(8080, function(){

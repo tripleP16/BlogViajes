@@ -1,7 +1,9 @@
 const express = require('express')
 const aplicacion = express.Router()
 const mysql = require('mysql')
-
+var path = require('path')
+const fileupload = require('express-fileupload')
+aplicacion.use(fileupload())
 var pool = mysql.createPool({
     connectionLimit: 20,
     host: 'localhost',
@@ -26,7 +28,7 @@ var pool = mysql.createPool({
         `
         consulta = `
         SELECT
-        titulo, resumen, fecha_hora, pseudonimo, votos
+        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id
         FROM publicaciones
         INNER JOIN autores
         ON publicaciones.autor_id = autores.id
@@ -41,7 +43,7 @@ var pool = mysql.createPool({
         }
         modificadorPagina = `LIMIT 5 OFFSET ${pagina * 5}`
         consulta = `SELECT
-        titulo, resumen, fecha_hora, pseudonimo, votos
+        titulo, resumen, fecha_hora, pseudonimo, votos, publicaciones.id
         FROM publicaciones
         INNER JOIN autores
         ON publicaciones.autor_id = autores.id
@@ -84,10 +86,12 @@ var pool = mysql.createPool({
   
   aplicacion.post('/procesarR', function(peticion, respuesta){
     pool.getConnection(function(err, connection) {
+      console.log(peticion.body)
       const email = peticion.body.email.toLowerCase().trim()
       const pseudonimo = peticion.body.pseudonimo.trim()
       const contrasena = peticion.body.contrasena
       const validacionEmail = `SELECT * FROM autores WHERE email = '${email}'`
+    
       
       connection.query(validacionEmail, function(error, filas, campos){
       
@@ -103,14 +107,42 @@ var pool = mysql.createPool({
             }else{
               const insertar = `INSERT INTO autores (email, contrasena, pseudonimo) VALUES('${email}', '${contrasena}', '${pseudonimo}')`; 
               connection.query(insertar, function(error, filas, campos){
-                peticion.flash('mensaje', 'Usuario Registrado Exitosamente')
-                respuesta.redirect('/registro')
+                if(peticion.files && peticion.files.avatar){
+                  const archivoAvatar = peticion.files.avatar
+                  const id = filas.insertId
+                  const nombreArchivo = `${id}${path.extname(archivoAvatar.name)}`
+                  archivoAvatar.mv(`./public/avatars/${nombreArchivo}`, (error)=>{
+                    const consultaAvatar = `UPDATE autores SET avatar = ${connection.escape(nombreArchivo)} WHERE id = ${connection.escape(id)}`
+                    connection.query(consultaAvatar, function(error, filas, campos){
+                      peticion.flash('mensaje', 'Usuario Registrado Exitosamente con Avatar')
+                      respuesta.redirect('/registro')
+                    })
+                  })
+                }else{
+                  peticion.flash('mensaje', 'Usuario Registrado Exitosamente')
+                  respuesta.redirect('/registro')
+                }
+                
               })
             }
           })
         }
       })
       
+      connection.release()
+    })
+  })
+
+  aplicacion.get('/publicacion/:id', function(peticion, respuesta){
+    pool.getConnection(function(err,connection){
+      const consulta = `SELECT * FROM publicaciones WHERE id = ${connection.escape(peticion.params.id)}`
+      connection.query(consulta, function(error, filas, campos){
+        if(filas.length > 0){
+          respuesta.render('publicacion', { data: filas[0] })
+        }else{
+          respuesta.redirect('/')
+        }
+      })
       connection.release()
     })
   })

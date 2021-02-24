@@ -21,6 +21,20 @@
    <br>
     <h3 class="center white-text text-darken-2 titulo">Publicaciones Recientes</h3>
     <div class="row contenedor">
+        
+          <form class="col s12 white" action="/">
+            <div class="row">
+              <div class="input-field col s7 m8 l10">
+                <i class="material-icons prefix">search</i>
+                <input id="busqueda" type="text" name="busqueda" class="validate" placeholder="Buscar una Publicacion">
+              </div>
+              <div class="input-field col s5 m4 l2">
+                  <button class="btn-large waves-effect teal darken-4" type="submit" name="action">Buscar
+                  <i class="material-icons right">search</i>
+                </button>
+              </div>
+            </form>
+          </div>
         <% data.forEach(dato => { %>
         <div class="col s12 m6 l6">
             <div class="card brown darken-2">

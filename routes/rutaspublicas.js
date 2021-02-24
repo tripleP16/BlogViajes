@@ -10,16 +10,40 @@ var pool = mysql.createPool({
     database: 'blog_viajes'
   })
 
-aplicacion.get('/', function (peticion, respuesta) {
-
-    pool.getConnection(function(err, connection) {
-      const consulta = `SELECT titulo, resumen, fecha_hora, votos, pseudonimo FROM publicaciones inner join autores a on publicaciones.autor_id = a.id ORDER BY fecha_hora desc LIMIT 5;`
-      connection.query(consulta, function (error, filas, campos) {
-        respuesta.render('index',{data: filas})
+  aplicacion.get('/', (peticion, respuesta) => {
+    pool.getConnection((err, connection) => {
+      let consulta
+      let modificadorConsulta = ""
+      const busqueda = ( peticion.query.busqueda ) ? peticion.query.busqueda : ""
+      if (busqueda != ""){
+        modificadorConsulta = `
+          WHERE
+          titulo LIKE '%${busqueda}%' OR
+          resumen LIKE '%${busqueda}%' OR
+          contenido LIKE '%${busqueda}%'
+        `
+        consulta = `
+        SELECT
+        titulo, resumen, fecha_hora, pseudonimo, votos
+        FROM publicaciones
+        INNER JOIN autores
+        ON publicaciones.autor_id = autores.id
+        ${modificadorConsulta}
+        ORDER BY fecha_hora DESC
+      `
+      }else{
+        consulta = `SELECT
+        titulo, resumen, fecha_hora, pseudonimo, votos
+        FROM publicaciones
+        INNER JOIN autores
+        ON publicaciones.autor_id = autores.id
+        ORDER BY fecha_hora DESC`
+      }
+      
+      connection.query(consulta, (error, filas, campos) => {
+        respuesta.render('index', { data: filas , busqueda: busqueda})
       })
       connection.release()
-  
-      
     })
   })
   
